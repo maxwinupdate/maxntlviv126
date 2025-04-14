@@ -1,64 +1,868 @@
+<!DOCTYPE html>
 <html>
-    <title> MaxNT Official </title>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaxNT Official</title>
+    <style>
+        /* Стилі для вашої існуючої сторінки (без змін) */
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav li {
+            margin: 0 10px;
+        }
+
+        main {
+            margin-top: 30px;
+        }
+
+        section {
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #777;
+        }
+
+        /* Стилі для динамічного календаря (без змін) */
+        .dynamic-calendar-container {
+            width: 320px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dynamic-calendar-header {
+            background-color: #f2f2f2;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dynamic-calendar-navigation {
+            display: flex;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            outline: none;
+        }
+
+        .dynamic-calendar-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .dynamic-calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .dynamic-calendar-table th,
+        .dynamic-calendar-table td {
+            border: 1px solid #eee;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .dynamic-calendar-table th {
+            background-color: #ddd;
+        }
+
+        .prev-month {
+            transform: translateX(-100%);
+        }
+
+        .next-month {
+            transform: translateX(100%);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Стилі для окремої кнопки ОК та повідомлення (без змін) */
+        .ok-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #separateOkBtn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #activationMessage {
+            display: none;
+            margin-top: 10px;
+            font-size: 18px;
+            color: green;
+        }
+
+        .checkmark {
+            color: green;
+            font-size: 24px;
+            margin-right: 5px;
+        }
+
+        /* Стилі для окремого текстового віджета (без змін) */
+        .text-widget {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .widget-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .widget-content {
+            font-size: 1em;
+            color: #333;
+        }
+
+        /* Стилі для віджета карти повітряних тривог (без змін) */
+        .alarm-map-widget {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .alarm-map-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .alarm-map-iframe {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            border: 0;
+            border-radius: 5px;
+        }
+
+        /* Стилі для "активації" календаря (без змін) */
+        .today {
+            background-color: lightblue;
+            font-weight: bold;
+        }
+
+        .weekend {
+            background-color: #f0f0f0;
+            color: red;
+        }
+
+        /* Стилі для калькулятора (без змін) */
+        .simple-calculator-widget {
+            margin-top: 30px;
+            padding: 15px;
+            border: 2px solid limegreen;
+            border-radius: 10px;
+            background-color: #f0fff0;
+            text-align: center;
+        }
+
+        .simple-calculator-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: darkgreen;
+            margin-bottom: 10px;
+        }
+
+        .simple-calculator-input {
+            padding: 8px;
+            margin: 5px;
+            width: 80px;
+        }
+
+        .simple-calculator-button {
+            padding: 8px 12px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: limegreen;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .simple-calculator-button:hover {
+            background-color: darkgreen;
+        }
+
+        /* Стилі для повідомлення про активацію radiobutton (без змін) */
+        .radio-activation-message {
+            margin-top: 10px;
+            font-size: 18px;
+            color: green;
+            display: none;
+        }
+
+        .radio-checkmark {
+            color: green;
+            font-size: 24px;
+            margin-right: 5px;
+        }
+
+        /* Стилі для управління радіо (без змін) */
+        .radio-control-widget {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .radio-control-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Стилі для кнопок управління радіо (без змін) */
+        .radio-button {
+            padding: 8px 12px;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .radio-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Стилі для секундоміра (без змін) */
+        .stopwatch-widget {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .stopwatch-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #display {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .stopwatch-btn {
+            padding: 8px 16px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        /* Стилі для таймера (без змін) */
+        .timer-widget {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .timer-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #timer-input {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        #timer-display {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .timer-btn {
+            padding: 8px 16px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        /* Стилі для віджета #russiaiscountryterroristate */
+        .terrorist-widget {
+            margin-top: 30px;
+            padding: 15px;
+            border: 2px solid red;
+            border-radius: 5px;
+            text-align: center;
+            background-color: #ffe0e0; /* Світлий червоний фон */
+        }
+
+        .terrorist-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: darkred;
+            margin-bottom: 10px;
+        }
+
+        .terrorist-text {
+            font-size: 1.2em;
+            color: red;
+        }
+    </style>
 </head>
+
 <body>
     <header>
         <h1>Вітаю на моєму вебсайті!</h1>
         <nav>
             <ul>
-                <li><a href="#"> Сервер (Google Drive) | В розробці, тимчасово закрито  </a></li>
-                <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSe9wBYfVKreFVYkH0A1JgpRUE3m70szFCRCERtmLO4Bsy65eQ/viewform?usp=preview"> Про мене </a></li>
-                <li><a href="#"> Classroom (в розробці) </a></li>
-				<li><a href="https://t.me/MaxNT_Live"> Telegram | LIVE </a></li>
+                <li><a href="#">
+                        Сервер (Google Drive) | В розробці, тимчасово закрито
+                    </a></li>
+                <li><a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSe9wBYfVKreFVYkH0A1JgpRUE3m70szFCRCERtmLO4Bsy65eQ/viewform?usp=preview">
+                        Про мене
+                    </a></li>
+                <li><a href="#">
+                        Classroom (в розробці)
+                    </a></li>
+                <li><a href="https://t.me/MaxNT_Live">
+                        Telegram | LIVE
+                    </a></li>
             </ul>
         </nav>
     </header>
-			
-			<input type="radio" id="option1" name="group1" value="value1">
-<label for="option1">Слабкість</label><br>
 
-<input type="radio" id="option2" name="group1" value="value2">
-<label for="option2">Середність</label><br>
+    <input type="radio" id="option1" name="group1" value="Слабкість">
+    <label for="option1">Слабкість</label><br>
 
-<input type="radio" id="option3" name="group1" value="value3">
-<label for="option3">Повишеність</label>
+    <input type="radio" id="option2" name="group1" value="Середність">
+    <label for="option2">Середність</label><br>
 
-	<input type="radio" id="option4" name="group1" value="value1">
-<label for="option1">Перевищеність</label><br>
+    <input type="radio" id="option3" name="group1" value="Повишеність">
+    <label for="option3">Повишеність</label>
 
-	<input type="radio" id="option5" name="group1" value="value1">
-<label for="option1">Крайня перевищеність</label><br>
+    <input type="radio" id="option4" name="group1" value="Перевищеність">
+    <label for="option4">Перевищеність</label><br>
 
-<input type="radio" id="option2" name="group1" value="value2">
-<label for="option2">Вогонь</label><br>
+    <input type="radio" id="option5" name="group1" value="Крайня перевищеність">
+    <label for="option5">Крайня перевищеність</label><br>
 
-<input type="radio" id="option3" name="group1" value="value3">
-<label for="option3">ПОТУЖНІСТЬ</label>
+    <input type="radio" id="option6" name="group1" value="Вогонь">
+    <label for="option6">Вогонь</label><br>
+
+    <input type="radio" id="option7" name="group1" value="ПОТУЖНІСТЬ">
+    <label for="option7">ПОТУЖНІСТЬ</label>
+
+    <div class="radio-activation-message" id="radioActivationMessage"></div>
+
+    <div class="dynamic-calendar-container">
+        <div class="dynamic-calendar-header">
+            <div class="dynamic-calendar-navigation">
+                <button id="prevBtn" class="nav-button">
+                    <
+                </button>
+            </div>
+            <div id="currentMonth" class="dynamic-calendar-title"></div>
+            <div class="dynamic-calendar-navigation">
+                <button id="nextBtn" class="nav-button">
+                    >
+                </button>
+            </div>
+        </div>
+        <div id="calendarBody"></div>
+    </div>
+
+    <div class="ok-container">
+        <button id="separateOkBtn">
+            OK
+        </button>
+        <div id="activationMessage"></div>
+    </div>
+
+    <div class="text-widget">
+        <h2 class="widget-title">
+            Важлива інформація
+        </h2>
+        <p class="widget-content">
+            Тут ви можете розмістити будь-який важливий текст або оголошення для відвідувачів
+            вашого сайту.
+        </p>
+        <p class="widget-content">
+            Наприклад, інформацію про оновлення, розклад роботи або контактні дані.
+        </p>
+    </div>
+
+    <div class="alarm-map-widget">
+        <h2 class="alarm-map-title">
+            Карта повітряних тривог України
+        </h2>
+        <iframe class="alarm-map-iframe" src="https://alerts.in.ua/" frameborder="0" loading="lazy"></iframe>
+        <p class="widget-content">
+            <small>
+                Дані з
+                <a href="https://alerts.in.ua/" target="_blank" rel="noopener noreferrer">
+                    alerts.in.ua
+                </a>
+            </small>
+        </p>
+    </div>
+
+    <div class="simple-calculator-widget">
+        <h2 class="simple-calculator-title">
+            Калькулятор
+        </h2>
+        <input type="number" id="num1" class="simple-calculator-input" placeholder="Число 1">
+        <select id="operator" class="simple-calculator-input">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="number" id="num2" class="simple-calculator-input" placeholder="Число 2">
+        <button id="calculateBtn" class="simple-calculator-button">
+            Обчислити
+        </button>
+    </div>
+
+    <div class="radio-control-widget">
+        <h2 class="radio-control-title">
+            Радіо Хіт-FM
+        </h2>
+        <audio id="hitFmPlayer" src="/* URL вашого потоку Хіт-FM */" controls></audio>
+        <div class="radio-button-container">
+            <button id="startRadioBtn" class="radio-button">Почати</button>
+            <button id="stopRadioBtn" class="radio-button">Стоп</button>
+            <button id="hitFmSiteBtn" class="radio-button">Хіт-FM (офіційний сайт)</button>
+        </div>
+    </div>
+
+    <div class="stopwatch-widget">
+        <h2 class="stopwatch-title">
+            Секундомір
+        </h2>
+        <div id="display">00:00:00</div>
+        <button id="startStop" class="stopwatch-btn">Старт</button>
+        <button id="reset" class="stopwatch-btn">Скинути</button>
+    </div>
+
+    <div class="timer-widget">
+        <h2 class="timer-title">
+            Таймер
+        </h2>
+        <input type="number" id="timer-input" placeholder="Секунди">
+        <div id="timer-display">00:00:00</div>
+        <button id="timer-start" class="timer-btn">Старт</button>
+        <button id="timer-reset" class="timer-btn">Скинути</button>
+    </div>
+
+    <div class="terrorist-widget">
+        <h2 class="terrorist-title">
+            #russiaiscountryterroristate
+        </h2>
+        <p class="terrorist-text">
+            Світ має знати правду!
+        </p>
+    </div>
 
     <main>
         <section>
-            <h2>Про цей сайт</h2>
-            <p> Це приклад простого HTML вебсайту. Ви можете використовувати його як основу для створення власного сайту.</p>
+            <h2>
+                Про цей сайт
+            </h2>
+            <p>
+                Це приклад простого HTML вебсайту. Ви можете використовувати його як основу для
+                створення власного сайту.
+            </p>
         </section>
 
         <section>
-            <h2>Support</h2>
+            <h2>
+                Наша команда
+            </h2>
             <ul>
-                <li>Max (Owner)</li>
-                <li>Vlad (Moderator)</li>
-                <li>Helper</li>
+                <li>Owner: Максим</li>
+                <li>Адміністратор: Влад</li>
+                <li>Модератор: Влад</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>
+                SUPPORT:
+            </h2>
+            <ul>
+                <li>MaxNT Official (LIVE) IT/CEO</li>
+                <li>Адміністрація MaxNT Official (LIVE)</li>
+                <li>Owner: Максим</li>
             </ul>
         </section>
     </main>
 
-<p> Соцмережі: </p>
-<button onclick="window.location.href='https://www.google.com';"> Google </button>
-<button onclick="window.location.href='https://www.youtube.com/@MaxNT_Official';"> YouTube </button>
-<button onclick="window.location.href='https://www.instagram.com/maxnt_official;"> Instagram </button>
-	<li><a href="https://instagram.com/maxgd2017_official"> Instagram (personal)  </a></li>
+    <p>
+        Соцмережі:
+    </p>
+    <button onclick="window.location.href='https://www.google.com';">
+        Google
+    </button>
+    <button onclick="window.location.href='https://www.youtube.com/@MaxNT_Official';">
+        YouTube
+    </button>
+    <button onclick="window.location.href='https://www.instagram.com/maxnt_official';">
+        Instagram
+    </button>
 
     <footer>
-        <p>&copy; 2025 | MaxNT Official &copy; All rights reserved. </p>
+        <p>
+            © 2025 | MaxNT Official © All rights reserved.
+        </p>
     </footer>
+
+    <script>
+        const currentMonthElement = document.getElementById('currentMonth');
+        const calendarBodyElement = document.getElementById('calendarBody');
+        const prevButton = document.getElementById('prevBtn');
+        const nextButton = document.getElementById('nextBtn');
+        const separateOkButton = document.getElementById('separateOkBtn');
+        const activationMessageDiv = document.getElementById('activationMessage');
+        const radioButtons = document.querySelectorAll('input[name="group1"]');
+        const radioActivationMessageDiv = document.getElementById('radioActivationMessage');
+
+        // Отримуємо посилання на елементи калькулятора
+        const num1Input = document.getElementById('num1');
+        const operatorSelect = document.getElementById('operator');
+        const num2Input = document.getElementById('num2');
+        const calculateButton = document.getElementById('calculateBtn');
+
+        // Отримуємо посилання на елементи управління радіо
+        const hitFmPlayer = document.getElementById('hitFmPlayer');
+        const startRadioBtn = document.getElementById('startRadioBtn');
+        const stopRadioBtn = document.getElementById('stopRadioBtn');
+        const hitFmSiteBtn = document.getElementById('hitFmSiteBtn');
+
+        // Отримуємо посилання на елементи секундоміра
+        const display = document.getElementById('display');
+        const startStopButton = document.getElementById('startStop');
+        const resetButton = document.getElementById('reset');
+
+        // Отримуємо посилання на елементи таймера
+        const timerInput = document.getElementById('timer-input');
+        const timerDisplay = document.getElementById('timer-display');
+        const timerStartButton = document.getElementById('timer-start');
+        const timerResetButton = document.getElementById('timer-reset');
+
+        let currentDate = new Date();
+
+        // Функції для календаря (без змін)
+        function renderCalendar(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const monthNames = ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень",
+                "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"
+            ];
+
+            currentMonthElement.textContent = `${monthNames[month]} ${year}`;
+
+            let calendarHTML = `<table class="dynamic-calendar-table"><thead><tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Нд</th></tr></thead><tbody><tr>`;
+
+            for (let i = 1; i < firstDayOfMonth; i++) {
+                calendarHTML += '<td></td>';
+            }
+            if (firstDayOfMonth === 0) {
+                for (let i = 0; i < 6; i++) {
+                    calendarHTML += '<td></td>';
+                }
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                calendarHTML += `<td>${day}</td>`;
+                if ((firstDayOfMonth + day - 1) % 7 === 0) {
+                    calendarHTML += '</tr><tr>';
+                }
+            }
+
+            const lastDayOfMonth = new Date(year, month, daysInMonth).getDay();
+            if (lastDayOfMonth !== 0) {
+                for (let i = lastDayOfMonth; i < 7; i++) {
+                    calendarHTML += '<td></td>';
+                }
+            }
+
+            calendarHTML += '</tr></tbody></table>';
+            calendarBodyElement.innerHTML = calendarHTML;
+
+            const table = calendarBodyElement.querySelector('.dynamic-calendar-table');
+            if (table) {
+                table.classList.add('hidden');
+                setTimeout(() => {
+                    table.classList.remove('hidden');
+                }, 50);
+            }
+
+            // Виділення сьогоднішньої дати
+            const today = new Date();
+            if (date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+                const todayCell = calendarBodyElement.querySelector(`td:nth-child(${(firstDayOfMonth + today.getDate() - 1) % 7 + 1}):nth-child(${Math.ceil((firstDayOfMonth + today.getDate()) / 7)})`);
+                if (todayCell) {
+                    todayCell.classList.add('today');
+                }
+            }
+
+            // Вибір дати при кліку
+            const dateCells = calendarBodyElement.querySelectorAll('td');
+            dateCells.forEach(cell => {
+                if (cell.textContent) {
+                    cell.addEventListener('click', () => {
+                        const selectedDay = parseInt(cell.textContent);
+                        const selectedDate = new Date(date.getFullYear(), date.getMonth(), selectedDay);
+                        alert(`Вибрано: ${selectedDate.toLocaleDateString()}`);
+                    });
+                }
+            });
+
+            // Підсвічування вихідних
+            dateCells.forEach((cell, index) => {
+                if ((index + firstDayOfMonth) % 7 === 0 || (index + firstDayOfMonth - 1) % 7 === 0) {
+                    cell.classList.add('weekend');
+                }
+            });
+        }
+
+        function navigateMonth(offset) {
+            const newDate = new Date(currentDate);
+            newDate.setMonth(currentDate.getMonth() + offset);
+            const oldTable = calendarBodyElement.querySelector('.dynamic-calendar-table');
+            if (oldTable) {
+                oldTable.classList.add(offset > 0 ? 'prev-month' : 'next-month');
+                setTimeout(() => {
+                    renderCalendar(newDate);
+                    currentDate = newDate;
+                }, 300);
+            } else {
+                renderCalendar(newDate);
+                currentDate = newDate;
+            }
+        }
+
+        prevButton.addEventListener('click', () => {
+            navigateMonth(-1);
+        });
+
+        nextButton.addEventListener('click', () => {
+            navigateMonth(1);
+        });
+
+        // Ініціалізація календаря
+        renderCalendar(currentDate);
+
+        // Функціональність окремої кнопки ОК (без змін)
+        separateOkButton.addEventListener('click', () => {
+            activationMessageDiv.innerHTML = '<span class="checkmark">✔</span> Успішно активовано!';
+            activationMessageDiv.style.display = 'block';
+        });
+
+        // Функціональність простого калькулятора (без змін)
+        calculateButton.addEventListener('click', () => {
+            const num1 = parseFloat(num1Input.value);
+            const num2 = parseFloat(num2Input.value);
+            const operator = operatorSelect.value;
+            let result;
+
+            if (isNaN(num1) || isNaN(num2)) {
+                alert("Будь ласка, введіть коректні числа");
+                return;
+            }
+
+            switch (operator) {
+                case '+':
+                    result = num1 + num2;
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    break;
+                case '/':
+                    if (num2 === 0) {
+                        alert("Ділення на нуль неможливе");
+                        return;
+                    }
+                    result = num1 / num2;
+                    break;
+            }
+
+            alert(`Результат: ${result}`);
+        });
+
+        // Функціональність radio buttons (без змін)
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', () => {
+                radioActivationMessageDiv.innerHTML = '<span class="radio-checkmark">✔</span> Успішно активовано!';
+                radioActivationMessageDiv.style.display = 'block';
+                setTimeout(() => {
+                    radioActivationMessageDiv.style.display = 'none';
+                }, 2000);
+            });
+        });
+
+        // Функціональність управління радіо (без змін)
+        startRadioBtn.addEventListener('click', () => {
+            hitFmPlayer.play();
+        });
+
+        stopRadioBtn.addEventListener('click', () => {
+            hitFmPlayer.pause();
+            hitFmPlayer.currentTime = 0;
+        });
+
+        hitFmSiteBtn.addEventListener('click', () => {
+            window.open('https://www.hitfm.ua/player/', '_blank');
+        });
+
+        // Функціональність секундоміра (без змін)
+        let timer;
+        let isRunning = false;
+        let seconds = 0,
+            minutes = 0,
+            hours = 0;
+
+        function startStopwatch() {
+            if (isRunning) {
+                clearInterval(timer);
+                startStopButton.textContent = "Старт";
+            } else {
+                timer = setInterval(run, 1000);
+                startStopButton.textContent = "Стоп";
+            }
+            isRunning = !isRunning;
+        }
+
+        function resetStopwatch() {
+            clearInterval(timer);
+            isRunning = false;
+            startStopButton.textContent = "Старт";
+            seconds = 0;
+            minutes = 0;
+            hours = 0;
+            display.textContent = "00:00:00";
+        }
+
+        function run() {
+            seconds++;
+            if (seconds == 60) {
+                seconds = 0;
+                minutes++;
+                if (minutes == 60) {
+                    minutes = 0;
+                    hours++;
+                }
+            }
+
+            let h = hours < 10 ? "0" + hours : hours;
+            let m = minutes < 10 ? "0" + minutes : minutes;
+            let s = seconds < 10 ? "0" + seconds : seconds;
+            display.textContent = h + ":" + m + ":" + s;
+        }
+
+        startStopButton.addEventListener('click', startStopwatch);
+        resetButton.addEventListener('click', resetStopwatch);
+
+        // Функціональність таймера (без змін)
+        let timerInterval;
+        let timeLeft;
+
+        function startTimer() {
+            const inputSeconds = parseInt(timerInput.value, 10);
+
+            if (isNaN(inputSeconds) || inputSeconds <= 0) {
+                alert("Будь ласка, введіть коректну кількість секунд.");
+                return;
+            }
+
+            timeLeft = inputSeconds;
+            updateTimerDisplay();
+            timerInput.style.display = "none";
+            timerStartButton.style.display = "none";
+
+            timerInterval = setInterval(function() {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Час вийшов!");
+                    timerInput.style.display = "block";
+                    timerStartButton.style.display = "block";
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 0;
+            updateTimerDisplay();
+            timerInput.style.display = "block";
+            timerStartButton.style.display = "block";
+        }
+
+        function updateTimerDisplay() {
+            let hours = Math.floor(timeLeft / 3600);
+            let minutes = Math.floor((timeLeft % 3600) / 60);
+            let seconds = timeLeft % 60;
+
+            let h = hours < 10 ? "0" + hours : hours;
+            let m = minutes < 10 ? "0" + minutes : minutes;
+            let s = seconds < 10 ? "0" + seconds : seconds;
+
+            timerDisplay.textContent = h + ":" + m + ":" + s;
+        }
+
+        timerStartButton.addEventListener('click', startTimer);
+        timerResetButton.addEventListener('click', resetTimer);
+    </script>
 </body>
+
 </html>
