@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MaxNT Official</title>
     <style>
-        /* Стилі для вашої існуючої сторінки (без змін) */
+        /* Загальні стилі (якщо потрібно) */
         body {
             font-family: sans-serif;
             margin: 20px;
@@ -28,6 +28,11 @@
             margin: 0 10px;
         }
 
+        nav a {
+            text-decoration: none;
+            color: green; /* Змінено колір на зелений */
+        }
+
         main {
             margin-top: 30px;
         }
@@ -45,17 +50,18 @@
             color: #777;
         }
 
-        /* Стилі для динамічного календаря (без змін) */
+        /* Стилі для динамічного календаря */
         .dynamic-calendar-container {
             width: 320px;
             margin: 20px auto;
-            border: 1px solid #ccc;
+            border: 2px solid limegreen; /* Зелена рамка */
             border-radius: 8px;
             overflow: hidden;
+            background-color: #f0fff0; /* Світло-зелений фон */
         }
 
         .dynamic-calendar-header {
-            background-color: #f2f2f2;
+            background-color: #d1ffd1; /* Світліший зелений для заголовка */
             padding: 15px;
             display: flex;
             justify-content: space-between;
@@ -73,11 +79,13 @@
             cursor: pointer;
             font-size: 1.2em;
             outline: none;
+            color: darkgreen; /* Зелений колір тексту кнопок */
         }
 
         .dynamic-calendar-title {
             font-size: 1.5em;
             font-weight: bold;
+            color: darkgreen; /* Зелений колір заголовка */
         }
 
         .dynamic-calendar-table {
@@ -88,14 +96,16 @@
 
         .dynamic-calendar-table th,
         .dynamic-calendar-table td {
-            border: 1px solid #eee;
+            border: 1px solid #c1f0c1; /* Світло-зелена рамка для клітинок */
             padding: 10px;
             text-align: center;
             cursor: pointer;
+            color: #333;
         }
 
         .dynamic-calendar-table th {
-            background-color: #ddd;
+            background-color: #a7e4a7; /* Темніший зелений для заголовків */
+            color: darkgreen;
         }
 
         .prev-month {
@@ -108,6 +118,17 @@
 
         .hidden {
             display: none;
+        }
+
+        .today {
+            background-color: #8fdd8f; /* Ще темніший зелений для сьогоднішньої дати */
+            font-weight: bold;
+            color: white;
+        }
+
+        .weekend {
+            background-color: #e0ffe0; /* Світліший зелений для вихідних */
+            color: red;
         }
 
         /* Стилі для окремої кнопки ОК та повідомлення (без змін) */
@@ -176,17 +197,6 @@
             height: 400px;
             border: 0;
             border-radius: 5px;
-        }
-
-        /* Стилі для "активації" календаря (без змін) */
-        .today {
-            background-color: lightblue;
-            font-weight: bold;
-        }
-
-        .weekend {
-            background-color: #f0f0f0;
-            color: red;
         }
 
         /* Стилі для калькулятора (без змін) */
@@ -327,14 +337,15 @@
             cursor: pointer;
         }
 
-        /* Стилі для віджета #russiaiscountryterroristate */
+        /* Стилі для віджета #russiaiscountryterroristate (без змін) */
         .terrorist-widget {
             margin-top: 30px;
             padding: 15px;
             border: 2px solid red;
             border-radius: 5px;
             text-align: center;
-            background-color: #ffe0e0; /* Світлий червоний фон */
+            background-color: #ffe0e0;
+            /* Світлий червоний фон */
         }
 
         .terrorist-title {
@@ -348,6 +359,74 @@
             font-size: 1.2em;
             color: red;
         }
+
+        /* Стилі для віджета пароля */
+        .password-widget {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .password-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #passwordInput {
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        #checkPasswordBtn {
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+
+        #passwordMessage {
+            margin-top: 10px;
+            font-size: 1em;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        #downloadBtn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: none;
+            /* Приховати кнопку завантаження спочатку */
+            margin-top: 10px;
+        }
+
+        #downloadBtn:hover {
+            background-color: #0056b3;
+        }
+
+        .success-icon {
+            color: green;
+            font-size: 20px;
+            margin-left: 5px;
+        }
+
+        .error-icon {
+            color: red;
+            font-size: 20px;
+            margin-left: 5px;
+        }
     </style>
 </head>
 
@@ -356,17 +435,17 @@
         <h1>Вітаю на моєму вебсайті!</h1>
         <nav>
             <ul>
-                <li><a href="#">
+                <li><a href="#" style="color: green;">
                         Сервер (Google Drive) | В розробці, тимчасово закрито
                     </a></li>
                 <li><a
-                        href="https://docs.google.com/forms/d/e/1FAIpQLSe9wBYfVKreFVYkH0A1JgpRUE3m70szFCRCERtmLO4Bsy65eQ/viewform?usp=preview">
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSe9wBYfVKreFVYkH0A1JgpRUE3m70szFCRCERtmLO4Bsy65eQ/viewform?usp=preview" style="color: green;">
                         Про мене
                     </a></li>
-                <li><a href="#">
+                <li><a href="#" style="color: green;">
                         Classroom (в розробці)
                     </a></li>
-                <li><a href="https://t.me/MaxNT_Live">
+                <li><a href="https://t.me/MaxNT_Live" style="color: green;">
                         Telegram | LIVE
                     </a></li>
             </ul>
@@ -503,6 +582,17 @@
         <p class="terrorist-text">
             Світ має знати правду!
         </p>
+    </div>
+
+    <div class="password-widget">
+        <h2 class="password-title">
+            Введіть пароль
+        </h2>
+        <input type="password" id="passwordInput" placeholder="Введіть пароль">
+        <button id="checkPasswordBtn">Перевірити</button>
+        <div id="passwordMessage"></div>
+        <a id="downloadBtn" href="https://drive.google.com/drive/folders/1loXAfVIxOfNJiYNmHwp1wU4pNsYdIjjn?usp=drive_link"
+            target="_blank">Завантажити</a>
     </div>
 
     <main>
@@ -826,7 +916,7 @@
             timerInput.style.display = "none";
             timerStartButton.style.display = "none";
 
-            timerInterval = setInterval(function() {
+            timerInterval = setInterval(function () {
                 timeLeft--;
                 updateTimerDisplay();
 
@@ -861,6 +951,29 @@
 
         timerStartButton.addEventListener('click', startTimer);
         timerResetButton.addEventListener('click', resetTimer);
+
+        // Функціональність віджета пароля
+        const passwordInput = document.getElementById('passwordInput');
+        const checkPasswordBtn = document.getElementById('checkPasswordBtn');
+        const passwordMessage = document.getElementById('passwordMessage');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const correctPassword = "qw12345";
+
+        checkPasswordBtn.addEventListener('click', () => {
+            const enteredPassword = passwordInput.value;
+
+            if (enteredPassword === correctPassword) {
+                passwordMessage.innerHTML = '<span class="success">Успішно активовано!</span><span class="success-icon">✔</span>';
+                passwordMessage.className = ""; // Reset class
+                passwordMessage.classList.add("success");
+                downloadBtn.style.display = 'inline-block'; // Show download button
+            } else {
+                passwordMessage.innerHTML = '<span class="error">Стороннім вхід заборонено!!!</span><span class="error-icon">❌</span>';
+                passwordMessage.className = ""; // Reset class
+                passwordMessage.classList.add("error");
+                downloadBtn.style.display = 'none'; // Hide download button
+            }
+        });
     </script>
 </body>
 
